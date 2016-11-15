@@ -282,7 +282,8 @@ get_header(); ?>
 					<ul>
 					<?php 
 					/** Importation des cantons **/
-					$json = file_get_contents( $file );
+					$json = file_get_contents( $file, false, null, 0, 7000000 );
+					
 					$cantons = json_decode( $json );
 					foreach( $cantons['features'] as $feature ) {
 						if( $feature['properties']['dep'] != '94' )
