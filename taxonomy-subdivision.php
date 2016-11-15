@@ -281,7 +281,7 @@ get_header(); ?>
 					?>
 					<ul>
 					<?php 
-					/** Importation des cantons **
+					/** Importation des cantons **/
 					$json = file_get_content( $file );
 					$cantons = json_decode( $json );
 					foreach( $cantons['fetaures'] as $feature ) {
@@ -289,7 +289,7 @@ get_header(); ?>
 							continue;
 						echo '<li>' . $feature['properties']['nom'] . '</li>';
 					}
-					**/
+					/** **/
 					?>
 					</ul>
 					
