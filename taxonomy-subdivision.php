@@ -171,7 +171,7 @@ get_header(); ?>
 		
 				<?php 
 					if ( $nivclass == 'departement')
-						$deps = array( get_queried_object()->term_id );
+						$deps = array( get_queried_object() );
 				?>	
 		
 				<?php 
