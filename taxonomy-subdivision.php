@@ -108,33 +108,120 @@ get_header(); ?>
 
 		<section class="clear top <?php echo $nivclass; ?>">
 
-			<div class="breadcrumb">
 
-				<span class="root"><a href="/city/"><?php echo get_field( 'breadcrumb_rubrique_centres', 'option' ); ?></a></span>
-				<span class="chev">&gt;</span>
 
-				<?php if( count( $ancestors ) > 1 ) : ?>
-				<span class="region"><a href="<?php echo get_term_link( $ancestors[1], 'departement' ); ?>"><?php echo get_term( $ancestors[1], 'departement' )->name; ?></a></span>
-				<span class="chev">&gt;</span>
+			<?php if( get_term_children( get_queried_object()->term_id, 'departement' ) ) : $deps = array(); $empty_deps = array(); ?>
+
+				<?php if ( $nivclass == 'departement') : ?>
+					<ul class="js-masonry liste_regions <?php echo ('département'==$niveau?'horizontal':'vertical'); ?> clear " data-masonry-options='{ "columnWidth": 30, "itemSelector": "li.region" }'>
+				<?php else : ?>				
+					<ul class="liste_regions <?php echo ('département'==$niveau?'horizontal':'vertical'); ?> clear">
 				<?php endif; ?>
-
-				<?php if( count( $ancestors ) > 0 ) : ?>
-					<span class="region"><a href="<?php echo get_term_link( $ancestors[0], 'departement' ); ?>"><?php echo $dn = get_term( $ancestors[0], 'departement' )->name; ?></a></span>
-					<?php if( $dn==get_queried_object()->name ) : //cas particuliers Paris/DOM-TOM ?>
-						<a href="<?php echo get_term_link( $ancestors[0], 'departement' ) ?>"><?php echo ' ('.get_queried_object()->description.')'; ?></a>
-					<?php else : ?>
-						<span class="chev">&gt;</span>
-					<?php endif; ?>
-				<?php endif; ?>
-
-				<?php if( $dn!=get_queried_object()->name ) : //Pas dans cas particuliers Paris/DOM-TOM ?>	
-				<span class="region">	
-					<a href="<?php echo get_term_link( get_queried_object()->term_id, 'departement' ); ?>"><?php echo get_queried_object()->name; ?><?php if('département'==$niveau) echo ' ('.get_queried_object()->description.')'; ?></a></span>
-				</span>
-				<?php endif; ?>
-			</div>
-
-
+				
+					<?php $regions = get_terms( 'departement', array( 'parent'=>get_queried_object()->term_id, 'hide_empty'=>($niveau=='ville'?true:false) ) ); ?>
+					<?php foreach( $regions as $region ) : if( $region->parent!=get_queried_object()->term_id ) continue; $region_svg = ucfirst( sanitize_title( preg_replace( '/\'/', '_', $region->name ) ) ); $deps[] = $region; ?>
+						<?php
+						/** désactiver départements vides **/
+						$empty = '';
+						if( !get_term_children( $region->term_id, 'departement' ) && $niveau != 'département' && $region->name!='PARIS' ) {
+							$empty = 'empty';
+							$empty_deps[] = $region->term_id;
+						}
+						?>
+						<li class="region <?php echo $empty; ?>">
+							<?php if( !$empty ) : ?>
+							<a class="region_link" href="<?php echo get_term_link( $region ); ?>" region="departement<?php echo $region->description; ?>">
+							<?php endif; ?>
+							<?php echo strtoupper( $region->name ); ?>
+							<?php if( !$empty ) : ?>
+							</a>
+							<?php endif; ?>
+						<?php if( 'département'==$niveau ) : ?>
+						<ul class="liste_centres vertical">
+						<?php foreach( $centres as $centre ) : if( has_term( $region->term_id, 'departement', $centre ) ) : ?>
+							<li>
+								<!-- <a href="<?php echo get_permalink( $centre->ID ); ?>" class="nom_centre"><?php echo $centre->post_title; ?></a><br/> -->
+								<?php 
+								$nom_centre	= get_post_meta($centre->ID,'nom_centre',true);
+								$adresse	= get_post_meta($centre->ID,'adresse',true);
+								$adresse	= preg_replace( '/^.*\n/', '', $adresse );		// Virer la 1ère ligne
+								$adresse	= preg_replace( '/\r?\n?(\d{5})/', "\n$1", $adresse );	// Saut de ligne avant CP
+								$tel		= get_post_meta($centre->ID,'telephone',true);
+								?>
+								<strong>
+								<a class="centre_link" href="<?php echo get_permalink( $centre->ID ); ?>"><?php echo $nom_centre; ?></a>
+								</strong><br />
+								<div class="adresse centre"><?php echo nl2br( $adresse ); ?></div>
+								<div class="tel centre"><?php echo $tel; ?></div>
+								<a href="<?php echo get_permalink( $centre->ID ); ?>" class="visiter">Visiter la page du centre</a>
+							</li>
+						<?php endif; endforeach; ?>
+						</ul>
+						<?php endif; ?>							
+						</li>
+					<?php endforeach; ?>
+				</ul>		
+		
+				<?php 
+				/** 
+				 * Extraction en base des données géographiques de contour 
+				 * de tous les départements de la région, 
+				 * et calcul des bords de la zone pour recadrage
+				 *
+				 **/
+				global $wpdb;
+				$minX = 1000;
+				$minY = 1000;
+				$maxX = 0;
+				$maxY = 0;
+				foreach( $deps as $dep ) {
+					$query = "SELECT trace FROM cartes_departements WHERE dep LIKE '$dep->description';";
+					$trace[$dep->description] = $wpdb->get_var( $query );
+					$coords = preg_split( '/\s*L\s*/', preg_replace( '/^\s*M\s*/', '', $trace[$dep->description] ) );
+					foreach( $coords as $coord ) {
+						list( $x, $y ) = preg_split( '/,/', $coord );
+						if( floatval($x) < floatval($minX) ) $minX = $x;
+						if( floatval($y) < floatval($minY) ) $minY = $y;
+						if( floatval($x) > floatval($maxX) ) $maxX = $x;
+						if( floatval($y) > floatval($maxY) ) $maxY = $y;
+					}
+				}
+				var_dump( $trace );
+				?>
+				
+				<?php if ( $niveau != 'département' ) : ?>
+					<div class="carte">
+						<svg id="france-svg" class="svg france regions" viewBox="0 0 <?php echo $maxX - $minX; ?> <?php echo $maxY - $minY; ?>" style="width:100%;height:500px;max-height:500px;" width="100%"><g>
+						<?php 
+						// <svg id="france-svg" class="svg france regions" viewBox="<?php echo $minX; ? > <?php echo $minY; ? > <?php echo $maxX; ? > <?php echo $maxY; ? >" style="width:100%;height:auto;max-height:500px;"><g> <- cette façon plus simple de recadrer avec la viewbox ne permet pas de zoomer l'échelle
+	
+						/**
+						 * Traçage du contour de chaque département
+						 * en recadrant pour être à 0 0 en haut à gauche
+						 *
+						 */
+						foreach( $deps as $dep ) {
+							$coords = preg_split( '/\s*L\s*/', preg_replace( '/^\s*M\s*/', '', $trace[$dep->description] ) );
+							/** Re-recadrage **/
+							foreach( $coords as &$coord ) {
+								list( $x, $y ) = preg_split( '/,/', $coord );
+								$x = ( $x - $minX );
+								$y = ( $y - $minY );
+								$coord = join( ',', array( $x, $y ) );
+							}
+							/**/
+							$totrace = 'M ' . join( ' L ', $coords );
+							$empty = '';
+							if( in_array( $dep->term_id, $empty_deps ) )
+								$empty = 'empty';
+							echo '<path d="' . $totrace . ' z " class="land departement' . $dep->description . ' ' . $empty . '" id="' . $dep->slug . '" />' . "\n";
+						}
+						?>
+						</g></svg>
+					</div>
+				<?php endif; //if ( $niveau != 'département' ) ?>
+				
+			<?php endif; ?>
 
 			<h2>Villes</h2>
 			
