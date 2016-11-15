@@ -295,7 +295,7 @@ get_header(); ?>
 							
 							var_dump( $feature->properties ); exit;	//debug
 							
-							if( $feature->properties['dep'] != '94' )
+							if( $feature->properties != '94' )
 								continue;
 							
 							echo '<li>' . $feature['properties']['nom'] . '</li>';	
