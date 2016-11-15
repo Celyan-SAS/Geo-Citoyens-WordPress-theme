@@ -170,6 +170,11 @@ get_header(); ?>
 				</ul>		
 		
 				<?php 
+					if ( $nivclass == 'departement')
+						$deps = array( get_queried_object()->term_id );
+				?>	
+		
+				<?php 
 				/** 
 				 * Extraction en base des données géographiques de contour 
 				 * de tous les départements de la région, 
@@ -225,7 +230,7 @@ get_header(); ?>
 						?>
 						</g></svg>
 					</div>
-				<?php endif; //if ( $niveau != 'département' ) ?>
+				<?php endif; //if ( $niveau != 'canton' ) ?>
 				
 			<?php endif; ?>
 
