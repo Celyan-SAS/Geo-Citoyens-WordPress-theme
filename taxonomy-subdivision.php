@@ -93,19 +93,16 @@ if(
 get_header(); ?>
 
 	<main role="main" class="cartes niveau <?php echo $niveau; ?>">
-		<!-- section -->
-		<section>
-
 			
-			<?php if( 'région' == $niveau ) : ?>
-				<h1>Région <?php echo get_queried_object()->name; ?></h1>
-			<?php endif; ?>
-			<?php if( 'département' == $niveau ) : ?>
-				<h1>Département <?php echo get_queried_object()->name; ?></h1>
-			<?php endif; ?>
-			<?php if( 'canton' == $niveau ) : ?>
-				<h1>Canton <?php echo get_queried_object()->name; ?></h1>
-			<?php endif; ?>
+		<?php if( 'région' == $niveau ) : ?>
+			<h1>Région <?php echo get_queried_object()->name; ?></h1>
+		<?php endif; ?>
+		<?php if( 'département' == $niveau ) : ?>
+			<h1>Département <?php echo get_queried_object()->name; ?></h1>
+		<?php endif; ?>
+		<?php if( 'canton' == $niveau ) : ?>
+			<h1>Canton <?php echo get_queried_object()->name; ?></h1>
+		<?php endif; ?>
 		
 		<?php if ( $niveau == 'région' ) : $nivclass = 'region'; elseif ( $niveau == 'département' ) : $nivclass = 'departement'; else  : $nivclass = 'ville'; endif; ?>
 
@@ -144,6 +141,7 @@ get_header(); ?>
 				<?php else : ?>				
 					<ul class="liste_regions <?php echo ('département'==$niveau?'horizontal':'vertical'); ?> clear">
 				<?php endif; ?>
+				
 					<?php $regions = get_terms( 'departement', array( 'parent'=>get_queried_object()->term_id, 'hide_empty'=>($niveau=='ville'?true:false) ) ); ?>
 					<?php foreach( $regions as $region ) : if( $region->parent!=get_queried_object()->term_id ) continue; $region_svg = ucfirst( sanitize_title( preg_replace( '/\'/', '_', $region->name ) ) ); $deps[] = $region; ?>
 						<?php
@@ -215,37 +213,7 @@ get_header(); ?>
 				var_dump( $trace );
 				?>
 				
-				<?php if ( $niveau != 'département' ) : ?>
-					<div class="carte">
-						<svg id="france-svg" class="svg france regions" viewBox="0 0 <?php echo $maxX - $minX; ?> <?php echo $maxY - $minY; ?>" style="width:100%;height:500px;max-height:500px;" width="100%"><g>
-						<?php 
-						// <svg id="france-svg" class="svg france regions" viewBox="<?php echo $minX; ? > <?php echo $minY; ? > <?php echo $maxX; ? > <?php echo $maxY; ? >" style="width:100%;height:auto;max-height:500px;"><g> <- cette façon plus simple de recadrer avec la viewbox ne permet pas de zoomer l'échelle
-	
-						/**
-						 * Traçage du contour de chaque département
-						 * en recadrant pour être à 0 0 en haut à gauche
-						 *
-						 */
-						foreach( $deps as $dep ) {
-							$coords = preg_split( '/\s*L\s*/', preg_replace( '/^\s*M\s*/', '', $trace[$dep->description] ) );
-							/** Re-recadrage **/
-							foreach( $coords as &$coord ) {
-								list( $x, $y ) = preg_split( '/,/', $coord );
-								$x = ( $x - $minX );
-								$y = ( $y - $minY );
-								$coord = join( ',', array( $x, $y ) );
-							}
-							/**/
-							$totrace = 'M ' . join( ' L ', $coords );
-							$empty = '';
-							if( in_array( $dep->term_id, $empty_deps ) )
-								$empty = 'empty';
-							echo '<path d="' . $totrace . ' z " class="land departement' . $dep->description . ' ' . $empty . '" id="' . $dep->slug . '" />' . "\n";
-						}
-						?>
-						</g></svg>
-					</div>
-				<?php endif; ?>
+
 				
 			<?php endif; ?>
 
