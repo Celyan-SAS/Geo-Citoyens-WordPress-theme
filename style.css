@@ -226,6 +226,23 @@ svg#france-svg {
   width: 600px;
   height: auto;
 }
+#france-svg path {
+    fill: #ccc;
+    stroke: #fff !important;
+    stroke-width: 4px !important;
+}
+.tax-departement #france-svg path {
+    stroke-width: 0.5 !important;
+}
+#france-svg path:not(#dep):hover {
+  fill: #53d250;
+  cursor: pointer;
+}
+#france-svg path.empty:not(#dep):hover {
+  fill: #999;
+  cursor: not-allowed;
+}
+
 
 /**
  * partials/sidebar
