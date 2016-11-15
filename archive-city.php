@@ -4,7 +4,7 @@
 		<!-- section -->
 		<section>
 
-			<h1><?php _e( 'Cartes', 'html5blank' ); ?></h1>
+			<h1><?php _e( 'France - régions', 'html5blank' ); ?></h1>
 
 			<ul class="liste_regions vertical">
 				<?php $regions = get_terms( 'subdivision', array( 'parent'=>0 ) ); ?>
