@@ -284,7 +284,7 @@ get_header(); ?>
 					/** Importation des cantons **/
 					$json = file_get_content( $file );
 					$cantons = json_decode( $json );
-					foreach( $cantons['fetaures'] as $feature ) {
+					foreach( $cantons['features'] as $feature ) {
 						if( $feature['properties']['dep'] != get_queried_object()->description )
 							continue;
 						echo '<li>' . $feature['properties']['nom'] . '</li>';
