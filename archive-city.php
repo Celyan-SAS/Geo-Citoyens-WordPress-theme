@@ -13,7 +13,9 @@
 				<?php endforeach; ?>
 			</ul>
 			
-			<img id="france-svg" class="svg france regions" src="<?php echo get_template_directory_uri(); ?>/img/france-regions.svg" alt="France - régions" />
+			<div class="carte">
+				<img id="france-svg" class="svg france regions" src="<?php echo get_template_directory_uri(); ?>/img/france-regions.svg" alt="France - régions" />
+			</div>
 			
 		</section>
 		<!-- /section -->
