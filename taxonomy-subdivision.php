@@ -107,8 +107,67 @@ get_header(); ?>
 				<h1>Canton <?php echo get_queried_object()->name; ?></h1>
 			<?php endif; ?>
 		
+			<?php 
+			/** 
+			 * Extraction en base des données géographiques de contour 
+			 * de tous les départements de la région, 
+			 * et calcul des bords de la zone pour recadrage
+			 *
+			 **/
+			global $wpdb;
+			$minX = 1000;
+			$minY = 1000;
+			$maxX = 0;
+			$maxY = 0;
+			foreach( $deps as $dep ) {
+				$query = "SELECT trace FROM cartes_departements WHERE dep LIKE '$dep->description';";
+				$trace[$dep->description] = $wpdb->get_var( $query );
+				$coords = preg_split( '/\s*L\s*/', preg_replace( '/^\s*M\s*/', '', $trace[$dep->description] ) );
+				foreach( $coords as $coord ) {
+					list( $x, $y ) = preg_split( '/,/', $coord );
+					if( floatval($x) < floatval($minX) ) $minX = $x;
+					if( floatval($y) < floatval($minY) ) $minY = $y;
+					if( floatval($x) > floatval($maxX) ) $maxX = $x;
+					if( floatval($y) > floatval($maxY) ) $maxY = $y;
+				}
+			}
+			?>
+			
+			<?php if ( $niveau != 'département' ) : ?>
+				<div class="carte">
+					<svg id="france-svg" class="svg france regions" viewBox="0 0 <?php echo $maxX - $minX; ?> <?php echo $maxY - $minY; ?>" style="width:100%;height:500px;max-height:500px;" width="100%"><g>
+					<?php 
+					// <svg id="france-svg" class="svg france regions" viewBox="<?php echo $minX; ? > <?php echo $minY; ? > <?php echo $maxX; ? > <?php echo $maxY; ? >" style="width:100%;height:auto;max-height:500px;"><g> <- cette façon plus simple de recadrer avec la viewbox ne permet pas de zoomer l'échelle
 
+					/**
+					 * Traçage du contour de chaque département
+					 * en recadrant pour être à 0 0 en haut à gauche
+					 *
+					 */
+					foreach( $deps as $dep ) {
+						$coords = preg_split( '/\s*L\s*/', preg_replace( '/^\s*M\s*/', '', $trace[$dep->description] ) );
+						/** Re-recadrage **/
+						foreach( $coords as &$coord ) {
+							list( $x, $y ) = preg_split( '/,/', $coord );
+							$x = ( $x - $minX );
+							$y = ( $y - $minY );
+							$coord = join( ',', array( $x, $y ) );
+						}
+						/**/
+						$totrace = 'M ' . join( ' L ', $coords );
+						$empty = '';
+						if( in_array( $dep->term_id, $empty_deps ) )
+							$empty = 'empty';
+						echo '<path d="' . $totrace . ' z " class="land departement' . $dep->description . ' ' . $empty . '" id="' . $dep->slug . '" />' . "\n";
+					}
+					?>
+					</g></svg>
+				</div>
+			<?php endif; ?>
+				
 
+			<h2>Villes</h2>
+			
 			<?php get_template_part('loop'); ?>
 
 			<?php get_template_part('pagination'); ?>
