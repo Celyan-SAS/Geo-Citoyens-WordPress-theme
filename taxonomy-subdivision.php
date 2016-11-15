@@ -137,7 +137,7 @@ get_header(); ?>
 			<?php if( get_term_children( get_queried_object()->term_id, 'subdivision' ) ) : $deps = array(); $empty_deps = array(); ?>
 
 				<?php if ( $nivclass == 'departement') : ?>
-					<h2>Liste des cnatons</h2>
+					<h2>Liste des cantons</h2>
 					<ul class="js-masonry liste_regions <?php echo ('département'==$niveau?'horizontal':'vertical'); ?> clear " data-masonry-options='{ "columnWidth": 30, "itemSelector": "li.region" }'>
 				<?php else : ?>
 					<h2>Liste des départements</h2>
@@ -163,26 +163,7 @@ get_header(); ?>
 							</a>
 							<?php endif; ?>
 						<?php if( 'département'==$niveau ) : ?>
-						<ul class="liste_centres vertical">
-						<?php foreach( $centres as $centre ) : if( has_term( $region->term_id, 'subdivision', $centre ) ) : ?>
-							<li>
-								<!-- <a href="<?php echo get_permalink( $centre->ID ); ?>" class="nom_centre"><?php echo $centre->post_title; ?></a><br/> -->
-								<?php 
-								$nom_centre	= get_post_meta($centre->ID,'nom_centre',true);
-								$adresse	= get_post_meta($centre->ID,'adresse',true);
-								$adresse	= preg_replace( '/^.*\n/', '', $adresse );		// Virer la 1ère ligne
-								$adresse	= preg_replace( '/\r?\n?(\d{5})/', "\n$1", $adresse );	// Saut de ligne avant CP
-								$tel		= get_post_meta($centre->ID,'telephone',true);
-								?>
-								<strong>
-								<a class="centre_link" href="<?php echo get_permalink( $centre->ID ); ?>"><?php echo $nom_centre; ?></a>
-								</strong><br />
-								<div class="adresse centre"><?php echo nl2br( $adresse ); ?></div>
-								<div class="tel centre"><?php echo $tel; ?></div>
-								<a href="<?php echo get_permalink( $centre->ID ); ?>" class="visiter">Visiter la page du centre</a>
-							</li>
-						<?php endif; endforeach; ?>
-						</ul>
+
 						<?php endif; ?>							
 						</li>
 					<?php endforeach; ?>
@@ -214,7 +195,7 @@ get_header(); ?>
 				}
 				?>
 				
-				<?php if ( $niveau != 'département' ) : ?>
+				<?php if ( $niveau != 'canton' ) : ?>
 					<div class="carte">
 						<svg id="france-svg" class="svg france regions" viewBox="0 0 <?php echo $maxX - $minX; ?> <?php echo $maxY - $minY; ?>" style="width:100%;height:500px;max-height:500px;" width="100%"><g>
 						<?php 
