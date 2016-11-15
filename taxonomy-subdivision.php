@@ -293,9 +293,9 @@ get_header(); ?>
 							
 							$feature = json_decode( $json_part );
 							
-							var_dump( $feature->properties ); exit;	//debug
+							var_dump( $feature->properties->ref ); //exit;	//debug
 							
-							if( $feature->properties != '94' )
+							if( $feature->properties->ref != '94' )
 								continue;
 							
 							echo '<li>' . $feature['properties']['nom'] . '</li>';	
