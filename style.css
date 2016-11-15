@@ -81,7 +81,7 @@ img {
 }
 
 a {
-  color: #444444;
+  color: #5aac51;
   text-decoration: none;
 }
 a:focus, a:hover {
@@ -205,6 +205,14 @@ input[type="search"] {
  * ---
  * Menus
  */
+ ul.liste_regions.vertical {
+  width: 25%;
+  margin-right: 5%;
+  float: left;
+  text-transform: uppercase;
+  font-size: 15px;
+}
+
 /**
  * partials/sidebar
  * ---
