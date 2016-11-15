@@ -232,6 +232,15 @@ get_header(); ?>
 					</div>
 				<?php endif; //if ( $niveau != 'canton' ) ?>
 				
+				<?php if( 'département' == $niveau ) : ?>
+					*** DEPARTEMENT ***
+					
+					<?php 
+						echo do_shortcode( '[wpgeojson_map map_type="leaflet" post_type="city" selection="all"]' ); 
+					?>
+					
+				<?php endif; ?>
+				
 			<?php endif; ?>
 
 			<h2>Villes</h2>
