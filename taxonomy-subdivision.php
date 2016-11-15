@@ -283,7 +283,7 @@ get_header(); ?>
 					<?php 
 					/** Importation des cantons **/
 					if( $h = fopen( $file, 'r' ) ) {
-						while( $json_part = fgets( $h, 4096 ) ) {
+						while( $json_part = fgets( $h, 4096*2 ) ) {
 						
 							if( !preg_match( '/^\{\"type\"\:\"Feature\"/', $json_part ) )
 								continue;
@@ -293,9 +293,12 @@ get_header(); ?>
 							
 							$feature = json_decode( $json_part );
 							
-							var_dump( $feature->properties->ref ); //exit;	//debug
+							//var_dump( $feature->properties->ref ); //exit;	//debug
 							
-							if( $feature->properties->ref != '94' )
+							if( !isset( $feature->properties->dep ) )
+								continue;
+							
+							if( $feature->properties->dep != '94' )
 								continue;
 							
 							echo '<li>' . $feature['properties']['nom'] . '</li>';	
