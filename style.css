@@ -194,6 +194,12 @@ input[type="search"] {
  * partial/header
  * ---
  */
+ .logo-img {
+ 	max-width: 80px;
+ 	height: auto;
+ 	max-height: 80px;
+ }
+ 
 /**
  * partials/nav
  * ---
