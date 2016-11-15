@@ -200,7 +200,7 @@ get_header(); ?>
 				}
 				?>
 				
-				<?php if ( $niveau != 'canton' ) : ?>
+				<?php if ( $niveau != 'département' ) : ?>
 					<div class="carte">
 						<svg id="france-svg" class="svg france regions" viewBox="0 0 <?php echo $maxX - $minX; ?> <?php echo $maxY - $minY; ?>" style="width:100%;height:500px;max-height:500px;" width="100%"><g>
 						<?php 
@@ -230,14 +230,45 @@ get_header(); ?>
 						?>
 						</g></svg>
 					</div>
-				<?php endif; //if ( $niveau != 'canton' ) ?>
+				<?php endif; //if ( $niveau != 'département' ) ?>
 				
 				<?php if( 'département' == $niveau ) : ?>
-					*** DEPARTEMENT ***
-					
+				
+					<div class="carte">
 					<?php 
 						echo do_shortcode( '[wpgeojson_map map_type="leaflet" post_type="city" selection="all"]' ); 
 					?>
+					</div>
+					
+					<div class="petite-carte">
+					<svg id="france-svg" class="svg france regions" viewBox="0 0 <?php echo $maxX - $minX; ?> <?php echo $maxY - $minY; ?>" style="width:100%;height:500px;max-height:500px;" width="100%"><g>
+						<?php 
+						// <svg id="france-svg" class="svg france regions" viewBox="<?php echo $minX; ? > <?php echo $minY; ? > <?php echo $maxX; ? > <?php echo $maxY; ? >" style="width:100%;height:auto;max-height:500px;"><g> <- cette façon plus simple de recadrer avec la viewbox ne permet pas de zoomer l'échelle
+	
+						/**
+						 * Traçage du contour de chaque département
+						 * en recadrant pour être à 0 0 en haut à gauche
+						 *
+						 */
+						foreach( $deps as $dep ) {
+							$coords = preg_split( '/\s*L\s*/', preg_replace( '/^\s*M\s*/', '', $trace[$dep->description] ) );
+							/** Re-recadrage **/
+							foreach( $coords as &$coord ) {
+								list( $x, $y ) = preg_split( '/,/', $coord );
+								$x = ( $x - $minX );
+								$y = ( $y - $minY );
+								$coord = join( ',', array( $x, $y ) );
+							}
+							/**/
+							$totrace = 'M ' . join( ' L ', $coords );
+							$empty = '';
+							if( in_array( $dep->term_id, $empty_deps ) )
+								$empty = 'empty';
+							echo '<path d="' . $totrace . ' z " class="land departement' . $dep->description . ' ' . $empty . '" id="' . $dep->slug . '" />' . "\n";
+						}
+						?>
+						</g></svg>
+					</div>
 					
 				<?php endif; ?>
 				
