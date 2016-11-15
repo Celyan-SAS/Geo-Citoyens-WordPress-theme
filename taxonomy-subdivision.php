@@ -271,10 +271,13 @@ get_header(); ?>
 					</div>
 					
 					<h3>Cantons fichier json</h3>
+					<?php 
+						$file = get_home_path() . 'data/cantons_2015_simpl.json'; 
+						echo '<p>Fichier: ' . $file . '</p>';
+					?>
 					<ul>
 					<?php 
 					/** Importation des cantons **/
-					$file = get_home_path() . 'data/cantons_2015_simpl.json';
 					$json = file_get_content( $file );
 					$cantons = json_decode( $json );
 					foreach( $cantons['fetaures'] as $feature ) {
