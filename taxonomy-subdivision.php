@@ -293,7 +293,7 @@ get_header(); ?>
 							
 							$feature = json_decode( $json_part );
 							
-							if( $feature['properties']['dep'] != '94' )
+							if( $feature->properties->dep != '94' )
 								continue;
 							echo '<li>' . $feature['properties']['nom'] . '</li>';	
 						}
