@@ -108,9 +108,33 @@ get_header(); ?>
 
 		<section class="clear top <?php echo $nivclass; ?>">
 
+			<div class="breadcrumb">
 
+				<span class="root"><a href="/city/">France</a></span>
+				<span class="chev">&gt;</span>
 
-			<?php if( get_term_children( get_queried_object()->term_id, 'departement' ) ) : $deps = array(); $empty_deps = array(); ?>
+				<?php if( count( $ancestors ) > 1 ) : ?>
+				<span class="region"><a href="<?php echo get_term_link( $ancestors[1], 'subdivision' ); ?>"><?php echo get_term( $ancestors[1], 'subdivision' )->name; ?></a></span>
+				<span class="chev">&gt;</span>
+				<?php endif; ?>
+
+				<?php if( count( $ancestors ) > 0 ) : ?>
+					<span class="region"><a href="<?php echo get_term_link( $ancestors[0], 'subdivision' ); ?>"><?php echo $dn = get_term( $ancestors[0], 'subdivision' )->name; ?></a></span>
+					<?php if( $dn==get_queried_object()->name ) : //cas particuliers Paris/DOM-TOM ?>
+						<a href="<?php echo get_term_link( $ancestors[0], 'subdivision' ) ?>"><?php echo ' ('.get_queried_object()->description.')'; ?></a>
+					<?php else : ?>
+						<span class="chev">&gt;</span>
+					<?php endif; ?>
+				<?php endif; ?>
+
+				<?php if( $dn!=get_queried_object()->name ) : //Pas dans cas particuliers Paris/DOM-TOM ?>	
+				<span class="region">	
+					<a href="<?php echo get_term_link( get_queried_object()->term_id, 'subdivision' ); ?>"><?php echo get_queried_object()->name; ?><?php if('département'==$niveau) echo ' ('.get_queried_object()->description.')'; ?></a></span>
+				</span>
+				<?php endif; ?>
+			</div>
+
+			<?php if( get_term_children( get_queried_object()->term_id, 'subdivision' ) ) : $deps = array(); $empty_deps = array(); ?>
 
 				<?php if ( $nivclass == 'departement') : ?>
 					<ul class="js-masonry liste_regions <?php echo ('département'==$niveau?'horizontal':'vertical'); ?> clear " data-masonry-options='{ "columnWidth": 30, "itemSelector": "li.region" }'>
@@ -118,12 +142,12 @@ get_header(); ?>
 					<ul class="liste_regions <?php echo ('département'==$niveau?'horizontal':'vertical'); ?> clear">
 				<?php endif; ?>
 				
-					<?php $regions = get_terms( 'departement', array( 'parent'=>get_queried_object()->term_id, 'hide_empty'=>($niveau=='ville'?true:false) ) ); ?>
+					<?php $regions = get_terms( 'subdivision', array( 'parent'=>get_queried_object()->term_id, 'hide_empty'=>($niveau=='ville'?true:false) ) ); ?>
 					<?php foreach( $regions as $region ) : if( $region->parent!=get_queried_object()->term_id ) continue; $region_svg = ucfirst( sanitize_title( preg_replace( '/\'/', '_', $region->name ) ) ); $deps[] = $region; ?>
 						<?php
 						/** désactiver départements vides **/
 						$empty = '';
-						if( !get_term_children( $region->term_id, 'departement' ) && $niveau != 'département' && $region->name!='PARIS' ) {
+						if( !get_term_children( $region->term_id, 'subdivision' ) && $niveau != 'département' && $region->name!='PARIS' ) {
 							$empty = 'empty';
 							$empty_deps[] = $region->term_id;
 						}
@@ -138,7 +162,7 @@ get_header(); ?>
 							<?php endif; ?>
 						<?php if( 'département'==$niveau ) : ?>
 						<ul class="liste_centres vertical">
-						<?php foreach( $centres as $centre ) : if( has_term( $region->term_id, 'departement', $centre ) ) : ?>
+						<?php foreach( $centres as $centre ) : if( has_term( $region->term_id, 'subdivision', $centre ) ) : ?>
 							<li>
 								<!-- <a href="<?php echo get_permalink( $centre->ID ); ?>" class="nom_centre"><?php echo $centre->post_title; ?></a><br/> -->
 								<?php 
