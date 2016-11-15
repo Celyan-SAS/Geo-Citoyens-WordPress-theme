@@ -293,6 +293,8 @@ get_header(); ?>
 							
 							$feature = json_decode( $json_part );
 							
+							var_dump( $feature->properties ); exit;	//debug
+							
 							if( $feature->properties['dep'] != '94' )
 								continue;
 							
