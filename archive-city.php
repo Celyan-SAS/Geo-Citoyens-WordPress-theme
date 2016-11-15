@@ -4,12 +4,10 @@
 		<!-- section -->
 		<section>
 
-			<h1><?php _e( 'Archives', 'html5blank' ); ?></h1>
+			<h1><?php _e( 'Cartes', 'html5blank' ); ?></h1>
 
-			<?php get_template_part('loop'); ?>
-
-			<?php get_template_part('pagination'); ?>
-
+			<img id="france-svg" class="svg france regions" src="<?php echo get_template_directory_uri(); ?>/img/france-regions.svg" alt="France - régions" />
+			
 		</section>
 		<!-- /section -->
 	</main>
