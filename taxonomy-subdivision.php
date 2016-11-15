@@ -301,7 +301,7 @@ get_header(); ?>
 							if( $feature->properties->dep != '94' )
 								continue;
 							
-							echo '<li>' . $feature['properties']['nom'] . '</li>';	
+							echo '<li>' . $feature->properties->nom . '</li>';	
 						}
 						fclose( $h );
 					}
