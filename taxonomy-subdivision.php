@@ -270,6 +270,21 @@ get_header(); ?>
 						</g></svg>
 					</div>
 					
+					<h3>Cantons fichier json</h3>
+					<ul>
+					<?php 
+					/** Importation des cantons **/
+					$file = get_home_path() . 'data/cantons_2015_simpl.json';
+					$json = file_get_content( $file );
+					$cantons = json_decode( $json );
+					foreach( $cantons['fetaures'] as $feature ) {
+						if( $feature['properties']['dep'] != get_queried_object()->description )
+							continue;
+						echo '<li>' . $feature['properties']['nom'] . '</li>';
+					}
+					?>
+					</ul>
+					
 				<?php endif; ?>
 				
 			<?php endif; ?>
