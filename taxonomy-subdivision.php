@@ -210,7 +210,6 @@ get_header(); ?>
 						if( floatval($y) > floatval($maxY) ) $maxY = $y;
 					}
 				}
-				var_dump( $trace );
 				?>
 				
 				<?php if ( $niveau != 'département' ) : ?>
