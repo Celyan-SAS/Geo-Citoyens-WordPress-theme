@@ -137,8 +137,10 @@ get_header(); ?>
 			<?php if( get_term_children( get_queried_object()->term_id, 'subdivision' ) ) : $deps = array(); $empty_deps = array(); ?>
 
 				<?php if ( $nivclass == 'departement') : ?>
+					<h2>Liste des cnatons</h2>
 					<ul class="js-masonry liste_regions <?php echo ('département'==$niveau?'horizontal':'vertical'); ?> clear " data-masonry-options='{ "columnWidth": 30, "itemSelector": "li.region" }'>
-				<?php else : ?>				
+				<?php else : ?>
+					<h2>Liste des départements</h2>
 					<ul class="liste_regions <?php echo ('département'==$niveau?'horizontal':'vertical'); ?> clear">
 				<?php endif; ?>
 				
