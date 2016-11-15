@@ -285,7 +285,7 @@ get_header(); ?>
 					$json = file_get_content( $file );
 					$cantons = json_decode( $json );
 					foreach( $cantons['features'] as $feature ) {
-						if( $feature['properties']['dep'] != get_queried_object()->description )
+						if( $feature['properties']['dep'] != '94' )
 							continue;
 						echo '<li>' . $feature['properties']['nom'] . '</li>';
 					}
