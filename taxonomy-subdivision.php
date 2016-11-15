@@ -272,7 +272,8 @@ get_header(); ?>
 					
 					<h3>Cantons fichier json</h3>
 					<?php 
-						$file = get_home_path() . 'data/cantons_2015_simpl.json'; 
+						$file = get_home_path();
+						$file .= 'data/cantons_2015_simpl.json'; 
 						echo '<p>Fichier: ' . $file . '</p>';
 					?>
 					<ul>
