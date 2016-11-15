@@ -282,13 +282,22 @@ get_header(); ?>
 					<ul>
 					<?php 
 					/** Importation des cantons **/
-					$json = file_get_contents( $file, false, null, 0, 7000000 );
-					
-					$cantons = json_decode( $json );
-					foreach( $cantons['features'] as $feature ) {
-						if( $feature['properties']['dep'] != '94' )
-							continue;
-						echo '<li>' . $feature['properties']['nom'] . '</li>';
+					if( $h = fopen( $file, 'r' ) ) {
+						while( $json_part = fgets( $h, 4096 ) ) {
+						
+							if( !preg_match( '/^\{\"type\"\:\"Feature\"/', $json_part ) )
+								continue;
+							
+							$json_part = rtrim( $json_part );
+							$json_part = rtrim( $json_part, ',' );
+							
+							$feature = json_decode( $json_part );
+							
+							if( $feature['properties']['dep'] != '94' )
+								continue;
+							echo '<li>' . $feature['properties']['nom'] . '</li>';	
+						}
+						fclose( $h );
 					}
 					/** **/
 					?>
