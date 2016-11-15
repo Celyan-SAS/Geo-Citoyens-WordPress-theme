@@ -93,7 +93,7 @@
 			$('ul.liste_regions.vertical a.region_link').hover(
 				function( e ){
 					var region_css = $(this).attr('region');
-					$('#france-svg #' + region_css).css('fill','#008bcc');
+					$('#france-svg #' + region_css).css('fill','#5aac51');
 				},
 				function( e ) {
 					var region_css = $(this).attr('region');
