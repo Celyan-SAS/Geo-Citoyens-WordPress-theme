@@ -249,6 +249,13 @@ svg#france-svg {
   cursor: not-allowed;
 }
 
+/**
+ * partials/cartes
+ * ---
+ */
+#map-canvas {
+	min-height: 200px;
+}
 
 /**
  * partials/sidebar
