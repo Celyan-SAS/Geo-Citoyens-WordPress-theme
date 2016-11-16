@@ -240,36 +240,6 @@ get_header(); ?>
 					?>
 					</div>
 					
-					<div class="petite-carte">
-					<svg id="france-svg" class="svg france regions" viewBox="0 0 <?php echo $maxX - $minX; ?> <?php echo $maxY - $minY; ?>" style="width:100%;height:500px;max-height:500px;" width="100%"><g>
-						<?php 
-						// <svg id="france-svg" class="svg france regions" viewBox="<?php echo $minX; ? > <?php echo $minY; ? > <?php echo $maxX; ? > <?php echo $maxY; ? >" style="width:100%;height:auto;max-height:500px;"><g> <- cette façon plus simple de recadrer avec la viewbox ne permet pas de zoomer l'échelle
-	
-						/**
-						 * Traçage du contour de chaque département
-						 * en recadrant pour être à 0 0 en haut à gauche
-						 *
-						 */
-						foreach( $deps as $dep ) {
-							$coords = preg_split( '/\s*L\s*/', preg_replace( '/^\s*M\s*/', '', $trace[$dep->description] ) );
-							/** Re-recadrage **/
-							foreach( $coords as &$coord ) {
-								list( $x, $y ) = preg_split( '/,/', $coord );
-								$x = ( $x - $minX );
-								$y = ( $y - $minY );
-								$coord = join( ',', array( $x, $y ) );
-							}
-							/**/
-							$totrace = 'M ' . join( ' L ', $coords );
-							$empty = '';
-							if( in_array( $dep->term_id, $empty_deps ) )
-								$empty = 'empty';
-							echo '<path d="' . $totrace . ' z " class="land departement' . $dep->description . ' ' . $empty . '" id="' . $dep->slug . '" />' . "\n";
-						}
-						?>
-						</g></svg>
-					</div>
-					
 					<h3>Cantons WP</h3>
 					<?php 
 						$cantons = get_terms( 
@@ -292,10 +262,9 @@ get_header(); ?>
 					?>
 					
 
-					
 					<h3>Cantons fichier json</h3>
 					<?php 
-						/**/
+						/**
 						$file = ABSPATH;
 						echo '<p>Fichier: ' . $file . '</p>';
 						$file .= 'data/cantons_2015_simpl.json'; 
@@ -304,7 +273,7 @@ get_header(); ?>
 					?>
 					<ul>
 					<?php 
-					/** Importation des cantons **/
+					/** Importation des cantons **
 					if( $h = fopen( $file, 'r' ) ) {
 						while( $json_part = fgets( $h, 4096*2 ) ) {
 						
@@ -329,7 +298,6 @@ get_header(); ?>
 							echo 'bureau: ' . $feature->properties->bureau . '<br/>';
 							echo 'Nom_1: ' . $feature->properties->Nom_1 . '<br/>';
 							
-							/**/
 							if( ! $res = term_exists( $feature->properties->nom, 'subdivision' ) ) {
 								$res = wp_insert_term(
 									$feature->properties->nom,
@@ -342,9 +310,8 @@ get_header(); ?>
 								if( is_array( $res ) && !empty( $res['term_id'] ) )
 									echo 'Créé terme: ' . $res['term_id'];
 							} 
-							/**/
 							
-							/** Stocker le GEOjson dans le champ ACF geojson de la subdivision **/
+							/** Stocker le GEOjson dans le champ ACF geojson de la subdivision **
 							if( !empty( $res['term_id'] ) ) 
 								update_field( 'geojson', $json_part, 'subdivision_' . $res['term_id'] );
 							
@@ -355,6 +322,20 @@ get_header(); ?>
 					/** **/
 					?>
 					</ul>
+					
+				<?php endif; ?>
+				
+				<?php if( 'département' == $niveau ) : ?>
+				
+					<div class="carte">
+					<?php 
+						echo do_shortcode( '[wpgeojson_map map_type="leaflet"]' );
+						if( $geojson = get_field( 'geojson', 'subdivision_' . get_queried_object()->term_id ) )
+							echo '<script>(function($){$(document).ready(function(){' .
+									'additionalFeatures.push(' . html_entity_decode( $geojson ) . ');' .
+									'});})(jQuery);</script>';
+					?>
+					</div>
 					
 				<?php endif; ?>
 				
