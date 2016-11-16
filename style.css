@@ -237,7 +237,7 @@ svg#france-svg {
     stroke: #fff !important;
     stroke-width: 4px !important;
 }
-.tax-departement #france-svg path {
+.tax-subdivision #france-svg path {
     stroke-width: 0.5 !important;
 }
 #france-svg path:not(#dep):hover {
