@@ -270,6 +270,23 @@ get_header(); ?>
 						</g></svg>
 					</div>
 					
+					<h3>Cantons WP</h3>
+					<?php 
+						$cantons = get_terms( 
+							'subdivision', 
+							array( 
+								'parent'=>get_queried_object()->term_id, 
+								'hide_empty'=>($niveau=='ville'?true:false) 
+							) 
+						);
+						foreach( $cantons as $canton ) {
+							if( $geojson = get_field( 'geojson', 'subdivision_' . $canton->term_id ) ) {
+								echo '<script>var gf=' . $geojson . ';L.geoJSON(gf).addTo(map);</script>';
+								var_dump( $geojson );
+							}
+						}
+					?>
+					
 					<h3>Cantons fichier json</h3>
 					<?php 
 						/**/
