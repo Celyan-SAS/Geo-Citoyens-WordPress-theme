@@ -281,7 +281,7 @@ get_header(); ?>
 						);
 						foreach( $cantons as $canton ) {
 							if( $geojson = get_field( 'geojson', 'subdivision_' . $canton->term_id ) ) {
-								echo '<script>var gf=' . $geojson . ';L.geoJSON(gf).addTo(map);</script>';
+								echo '<script>var gf=' . html_entity_decode( $geojson ) . ';L.geoJSON(gf).addTo(map);</script>';
 								var_dump( $geojson );
 							}
 						}
