@@ -127,7 +127,7 @@ get_header(); ?>
 					<?php endif; ?>
 				<?php endif; ?>
 
-				<?php if( $dn!=get_queried_object()->name ) : //Pas dans cas particuliers Paris/DOM-TOM ?>	
+				<?php if( empty($dn) || $dn!=get_queried_object()->name ) : //Pas dans cas particuliers Paris/DOM-TOM ?>	
 				<span class="region">	
 					<a href="<?php echo get_term_link( get_queried_object()->term_id, 'subdivision' ); ?>"><?php echo get_queried_object()->name; ?><?php if('département'==$niveau) echo ' ('.get_queried_object()->description.')'; ?></a></span>
 				</span>
@@ -285,7 +285,7 @@ get_header(); ?>
 								echo '<script>(function($){$(document).ready(function(){' .
 									'additionalFeatures.push(' . html_entity_decode( $geojson ) . ');' .
 									'});})(jQuery);</script>';
-								var_dump( $geojson );
+								//var_dump( $geojson );
 							}
 						}
 /**/
