@@ -301,7 +301,11 @@ get_header(); ?>
 							if( $feature->properties->dep != '94' )
 								continue;
 							
-							echo '<li>' . $feature->properties->nom . '</li>';	
+							echo '<li>';
+							echo 'nom: ' . $feature->properties->nom . '<br/>';
+							echo 'bureau: ' . $feature->properties->bureau . '<br/>';
+							echo 'Nom_1: ' . $feature->properties->Nom_1 . '<br/>';
+							echo '</li>';	
 						}
 						fclose( $h );
 					}
