@@ -330,7 +330,7 @@ get_header(); ?>
 							echo 'Nom_1: ' . $feature->properties->Nom_1 . '<br/>';
 							
 							/**/
-							if( !term_exists( $feature->properties->nom, 'subdivision' ) ) {
+							if( ! $res = term_exists( $feature->properties->nom, 'subdivision' ) ) {
 								$res = wp_insert_term(
 									$feature->properties->nom,
 									'subdivision',
@@ -341,8 +341,12 @@ get_header(); ?>
 								);
 								if( is_array( $res ) && !empty( $res['term_id'] ) )
 									echo 'Créé terme: ' . $res['term_id'];
-							}
+							} 
 							/**/
+							
+							/** Stocker le GEOjson dans le champ ACF geojson de la subdivision **/
+							if( !empty( $res['term_id'] ) ) 
+								update_field( 'geojson', $feature, 'subdivision_' . $res['term_id'] );
 							
 							echo '</li>';	
 						}
