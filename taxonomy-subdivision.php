@@ -298,13 +298,27 @@ get_header(); ?>
 							if( !isset( $feature->properties->dep ) )
 								continue;
 							
-							if( $feature->properties->dep != '94' )
+							if( $feature->properties->dep != get_queried_object()->description )
 								continue;
 							
 							echo '<li>';
 							echo 'nom: ' . $feature->properties->nom . '<br/>';
 							echo 'bureau: ' . $feature->properties->bureau . '<br/>';
 							echo 'Nom_1: ' . $feature->properties->Nom_1 . '<br/>';
+							
+							/*
+							if( !term_exists( $feature->properties->nom, 'subdivision' ) ) {
+								$res = wp_insert_term(
+									$feature->properties->nom,
+									'subdivision',
+									array(
+										'description' => $feature->properties->ref,
+										'parent' => get_queried_object()->term_id
+									)
+								);
+							}
+							*/
+							
 							echo '</li>';	
 						}
 						fclose( $h );
