@@ -346,7 +346,7 @@ get_header(); ?>
 							
 							/** Stocker le GEOjson dans le champ ACF geojson de la subdivision **/
 							if( !empty( $res['term_id'] ) ) 
-								update_field( 'geojson', $feature, 'subdivision_' . $res['term_id'] );
+								update_field( 'geojson', $json_part, 'subdivision_' . $res['term_id'] );
 							
 							echo '</li>';	
 						}
