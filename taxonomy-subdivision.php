@@ -282,7 +282,9 @@ get_header(); ?>
 /**/
 						foreach( $cantons as $canton ) {
 							if( $geojson = get_field( 'geojson', 'subdivision_' . $canton->term_id ) ) {
-								echo '<script>additionalFeatures.push(' . html_entity_decode( $geojson ) . ');</script>';
+								echo '<script>(function($){$(document).ready(function(){' .
+									'additionalFeatures.push(' . html_entity_decode( $geojson ) . ');' .
+									'});})(jQuery);</script>';
 								var_dump( $geojson );
 							}
 						}
