@@ -306,7 +306,7 @@ get_header(); ?>
 							echo 'bureau: ' . $feature->properties->bureau . '<br/>';
 							echo 'Nom_1: ' . $feature->properties->Nom_1 . '<br/>';
 							
-							/*
+							/**/
 							if( !term_exists( $feature->properties->nom, 'subdivision' ) ) {
 								$res = wp_insert_term(
 									$feature->properties->nom,
@@ -316,8 +316,10 @@ get_header(); ?>
 										'parent' => get_queried_object()->term_id
 									)
 								);
+								if( is_array( $res ) && !empty( $res['term_id'] ) )
+									echo 'Créé terme: ' . $res['term_id'];
 							}
-							*/
+							/**/
 							
 							echo '</li>';	
 						}
