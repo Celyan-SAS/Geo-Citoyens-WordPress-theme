@@ -355,6 +355,26 @@ get_header(); ?>
 							echo '<script>(function($){$(document).ready(function(){' .
 									'additionalFeatures.push(' . html_entity_decode( $geojson ) . ');' .
 									'});})(jQuery);</script>';
+						
+						/** Test troncons voies Nogent **/
+						if( 8606 == $villes[0]->ID ) :
+							?>
+							<script>(function($){$(document).ready(function(){
+								var troncons = new L.geoJson();
+								$.ajax({
+									dataType: "json",
+									url: "/data/troncons-94052.json",
+									success: function(data) {
+									    $(data.features).each(function(key, data) {
+									    	troncons.addData(data);
+									    });
+									}
+								})
+								additionalFeatures.push(troncons);
+							});})(jQuery);
+							</script>
+							<?php 
+						endif;
 					?>
 					</div>
 					
