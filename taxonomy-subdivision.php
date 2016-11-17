@@ -325,8 +325,9 @@ get_header(); ?>
 					
 				<?php endif; ?>
 				
-				<?php if( 'département' == $niveau ) : ?>
+				<?php if( 'canton' == $niveau ) : ?>
 				
+					<p>Carte du canton</p>
 					<div class="carte">
 					<?php 
 						echo do_shortcode( '[wpgeojson_map map_type="leaflet"]' );
