@@ -343,7 +343,7 @@ get_header(); ?>
 								)
 							)
 						) );
-						var_dump( $villes );
+						//var_dump( $villes );
 						
 						/** Afficher la carte **/
 						echo do_shortcode( '[wpgeojson_map map_type="leaflet" post_type="city" selection="' .$villes[0]->ID . '"]' );
