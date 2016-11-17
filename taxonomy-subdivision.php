@@ -357,6 +357,7 @@ get_header(); ?>
 									'});})(jQuery);</script>';
 						
 						/** Test troncons voies Nogent **/
+						//ogr2ogr -s_srs EPSG:2154 -t_srs EPSG:4326 -f GeoJSON troncons-94052.json TRONCON_VOIE.shp -where "C_COINSEE=94052"
 						if( 8606 == $villes[0]->ID ) :
 							?>
 							<script>(function($){$(document).ready(function(){
