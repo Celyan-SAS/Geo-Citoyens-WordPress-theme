@@ -346,7 +346,7 @@ get_header(); ?>
 						var_dump( $villes );
 						
 						/** Afficher la carte **/
-						echo do_shortcode( '[wpgeojson_map map_type="leaflet" post_type="city" selection="all"]' );
+						echo do_shortcode( '[wpgeojson_map map_type="leaflet" post_type="city" selection="' .$villes[0]->ID . '"]' );
 						if( $geojson = get_field( 'geojson', 'subdivision_' . get_queried_object()->term_id ) )
 							echo '<script>(function($){$(document).ready(function(){' .
 									'additionalFeatures.push(' . html_entity_decode( $geojson ) . ');' .
