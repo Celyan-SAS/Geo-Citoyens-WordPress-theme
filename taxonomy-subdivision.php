@@ -332,7 +332,11 @@ get_header(); ?>
 					<p>Carte du canton <?php echo get_queried_object()->term_id; ?></p>
 					<div class="carte">
 					<?php 
-						//TODO: sélectionner uniquement les villes de ce canton
+						/** Sélectionner uniquement les villes de ce canton **/
+						$villes = get_posts( array( 'post_type'=>'city', 'subdivision'=>get_queried_object()->term_id) );
+						var_dump( $villes );
+						
+						/** Afficher la carte **/
 						echo do_shortcode( '[wpgeojson_map map_type="leaflet" post_type="city" selection="all"]' );
 						if( $geojson = get_field( 'geojson', 'subdivision_' . get_queried_object()->term_id ) )
 							echo '<script>(function($){$(document).ready(function(){' .
