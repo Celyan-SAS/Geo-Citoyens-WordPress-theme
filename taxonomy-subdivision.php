@@ -329,10 +329,10 @@ get_header(); ?>
 				
 				<?php if( 'canton' == $niveau ) : ?>
 				
-					<p>Carte du canton</p>
+					<p>Carte du canton <?php echo get_queried_object()->term_id; ?></p>
 					<div class="carte">
 					<?php 
-						echo do_shortcode( '[wpgeojson_map map_type="leaflet"]' );
+						echo do_shortcode( '[wpgeojson_map map_type="leaflet" post_type="city"]' );
 						if( $geojson = get_field( 'geojson', 'subdivision_' . get_queried_object()->term_id ) )
 							echo '<script>(function($){$(document).ready(function(){' .
 									'additionalFeatures.push(' . html_entity_decode( $geojson ) . ');' .
