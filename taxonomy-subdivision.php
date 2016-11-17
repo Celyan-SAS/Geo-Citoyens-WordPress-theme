@@ -175,32 +175,34 @@ get_header(); ?>
 				?>	
 		
 				<?php 
-				/** 
-				 * Extraction en base des données géographiques de contour 
-				 * de tous les départements de la région, 
-				 * et calcul des bords de la zone pour recadrage
-				 *
-				 **/
-				global $wpdb;
-				$minX = 1000;
-				$minY = 1000;
-				$maxX = 0;
-				$maxY = 0;
-				foreach( $deps as $dep ) {
-					$query = "SELECT trace FROM cartes_departements WHERE dep LIKE '$dep->description';";
-					$trace[$dep->description] = $wpdb->get_var( $query );
-					$coords = preg_split( '/\s*L\s*/', preg_replace( '/^\s*M\s*/', '', $trace[$dep->description] ) );
-					foreach( $coords as $coord ) {
-						list( $x, $y ) = preg_split( '/,/', $coord );
-						if( floatval($x) < floatval($minX) ) $minX = $x;
-						if( floatval($y) < floatval($minY) ) $minY = $y;
-						if( floatval($x) > floatval($maxX) ) $maxX = $x;
-						if( floatval($y) > floatval($maxY) ) $maxY = $y;
+				if( $niveau != 'canton' ) {
+					/** 
+					 * Extraction en base des données géographiques de contour 
+					 * de tous les départements de la région, 
+					 * et calcul des bords de la zone pour recadrage
+					 *
+					 **/
+					global $wpdb;
+					$minX = 1000;
+					$minY = 1000;
+					$maxX = 0;
+					$maxY = 0;
+					foreach( $deps as $dep ) {
+						$query = "SELECT trace FROM cartes_departements WHERE dep LIKE '$dep->description';";
+						$trace[$dep->description] = $wpdb->get_var( $query );
+						$coords = preg_split( '/\s*L\s*/', preg_replace( '/^\s*M\s*/', '', $trace[$dep->description] ) );
+						foreach( $coords as $coord ) {
+							list( $x, $y ) = preg_split( '/,/', $coord );
+							if( floatval($x) < floatval($minX) ) $minX = $x;
+							if( floatval($y) < floatval($minY) ) $minY = $y;
+							if( floatval($x) > floatval($maxX) ) $maxX = $x;
+							if( floatval($y) > floatval($maxY) ) $maxY = $y;
+						}
 					}
 				}
 				?>
 				
-				<?php if ( $niveau != 'département' ) : ?>
+				<?php if ( $niveau != 'département' && $niveau != 'canton' ) : ?>
 					<div class="carte">
 						<svg id="france-svg" class="svg france regions" viewBox="0 0 <?php echo $maxX - $minX; ?> <?php echo $maxY - $minY; ?>" style="width:100%;height:500px;max-height:500px;" width="100%"><g>
 						<?php 
@@ -230,7 +232,7 @@ get_header(); ?>
 						?>
 						</g></svg>
 					</div>
-				<?php endif; //if ( $niveau != 'département' ) ?>
+				<?php endif; //if ( $niveau != 'département' && $niveau != 'canton' ) ?>
 				
 				<?php if( 'département' == $niveau ) : ?>
 				
