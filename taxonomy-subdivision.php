@@ -137,10 +137,11 @@ get_header(); ?>
 			<?php if( get_term_children( get_queried_object()->term_id, 'subdivision' ) ) : $deps = array(); $empty_deps = array(); ?>
 
 				<?php if ( $nivclass == 'departement') : ?>
-					<h2>Liste des cantons</h2>
-					<ul class="js-masonry liste_regions vertical clear " data-masonry-options='{ "columnWidth": 30, "itemSelector": "li.region" }'>
-				<?php elseif ( $nivclass == 'canton') : ?>
-					<h2>Liste des bureaux de vote</h2>
+					<?php if ( $niveau == 'canton') : ?>
+						<h2>Liste des bureaux de vote</h2>
+					<?php else : ?>
+						<h2>Liste des cantons</h2>
+					<?php endif; ?>
 					<ul class="js-masonry liste_regions vertical clear " data-masonry-options='{ "columnWidth": 30, "itemSelector": "li.region" }'>
 				<?php else : ?>
 					<h2>Liste des départements</h2>
