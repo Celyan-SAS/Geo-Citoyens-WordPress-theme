@@ -138,7 +138,10 @@ get_header(); ?>
 
 				<?php if ( $nivclass == 'departement') : ?>
 					<h2>Liste des cantons</h2>
-					<ul class="js-masonry liste_regions <?php echo ('département'==$niveau?'horizontal':'vertical'); ?> clear " data-masonry-options='{ "columnWidth": 30, "itemSelector": "li.region" }'>
+					<ul class="js-masonry liste_regions vertical clear " data-masonry-options='{ "columnWidth": 30, "itemSelector": "li.region" }'>
+				<?php elseif ( $nivclass == 'canton') : ?>
+					<h2>Liste des bureaux de vote</h2>
+					<ul class="js-masonry liste_regions vertical clear " data-masonry-options='{ "columnWidth": 30, "itemSelector": "li.region" }'>
 				<?php else : ?>
 					<h2>Liste des départements</h2>
 					<ul class="liste_regions <?php echo ('département'==$niveau?'horizontal':'vertical'); ?> clear">
@@ -329,7 +332,7 @@ get_header(); ?>
 				
 				<?php if( 'canton' == $niveau ) : ?>
 				
-					<p>Carte du canton <?php echo get_queried_object()->name; ?></p>
+					<!--  p>Carte du canton <?php echo get_queried_object()->name; ?></p -->
 					<div class="carte">
 					<?php 
 						/** Sélectionner uniquement les villes de ce canton **/
