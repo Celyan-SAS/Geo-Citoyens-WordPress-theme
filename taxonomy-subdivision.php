@@ -368,9 +368,10 @@ get_header(); ?>
 									    $(data.features).each(function(key, data) {
 									    	troncons.addData(data);
 									    });
+									    additionalFeatures.push(data);
 									}
-								})
-								additionalFeatures.push(troncons);
+								});
+								//additionalFeatures.push(troncons);
 							});})(jQuery);
 							</script>
 							<?php 
