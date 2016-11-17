@@ -329,7 +329,7 @@ get_header(); ?>
 				
 				<?php if( 'canton' == $niveau ) : ?>
 				
-					<p>Carte du canton <?php echo get_queried_object()->term_id; ?></p>
+					<p>Carte du canton <?php echo get_queried_object()->name; ?></p>
 					<div class="carte">
 					<?php 
 						/** Sélectionner uniquement les villes de ce canton **/
