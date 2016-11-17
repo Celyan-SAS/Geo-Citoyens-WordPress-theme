@@ -333,7 +333,7 @@ get_header(); ?>
 					<div class="carte">
 					<?php 
 						/** Sélectionner uniquement les villes de ce canton **/
-						$villes = get_posts( array( 'post_type'=>'city', 'subdivision'=>get_queried_object()->term_id) );
+						$villes = get_posts( array( 'post_type'=>'city', 'subdivision'=>get_queried_object()->name) );
 						var_dump( $villes );
 						
 						/** Afficher la carte **/
