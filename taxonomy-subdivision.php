@@ -364,7 +364,7 @@ get_header(); ?>
 							(function($){$(document).ready(function(){
 								//var troncons = new L.geoJson();
 								$.ajax({
-
+									dataType: "text",
 									url: "/data/troncons-94052.json",
 									success: function(data) {
 										additionalFeatures.push(data);
