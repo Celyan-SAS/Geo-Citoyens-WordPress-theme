@@ -185,7 +185,7 @@ get_header(); ?>
 				?>	
 		
 				<?php 
-				if( $niveau != 'canton' ) {
+				if( $niveau != 'canton' && $niveau != 'bureau' ) {
 					/** 
 					 * Extraction en base des données géographiques de contour 
 					 * de tous les départements de la région, 
@@ -401,7 +401,7 @@ get_header(); ?>
 								array(
 									'taxonomy'  => 'subdivision',
 									'field'		=> 'name',
-									'term_id'		=> get_queried_object()->parent
+									'term_id'	=> 373
 								)
 							)
 						) );
@@ -409,7 +409,7 @@ get_header(); ?>
 						
 						/** Afficher la carte **/
 						echo do_shortcode( '[wpgeojson_map map_type="leaflet" post_type="city" selection="' .$villes[0]->ID . '"]' );
-						if( $geojson = get_field( 'geojson', 'subdivision_' . get_queried_object()->parent ) )
+						if( $geojson = get_field( 'geojson', 'subdivision_373' ) )
 							echo '<script>(function($){$(document).ready(function(){' .
 									'additionalFeatures.push(' . html_entity_decode( $geojson ) . ');' .
 									'});})(jQuery);</script>';
