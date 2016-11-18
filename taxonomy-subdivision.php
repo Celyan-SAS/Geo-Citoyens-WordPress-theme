@@ -420,7 +420,7 @@ get_header(); ?>
 								var troncons = new L.geoJson();
 								$.ajax({
 									dataType: "json",
-									url: "/data/cantons_2015_simpl.json",
+									url: "/data/troncons-94052.json",
 									success: function(data) {
 									    $(data.features).each(function(key, data) {
 									    	troncons.addData(data);
