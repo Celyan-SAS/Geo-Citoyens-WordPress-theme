@@ -446,6 +446,28 @@ get_header(); ?>
 								Bureau = 1;
 							";
 							$rows = $wpdb->get_results( $q );	
+							
+							/*TODO:
+							Mettre les numéros en data html
+							Chercher nom de la voie dans table geo_voies
+							Si trouvé -> récup code N_SQ_VO -> data-code_voie
+							Si non trouvé -> recherche
+							Si trouvé -> indiquer nom à corriger, rechercher dans geo_voies avec nom normalisé
+							Si non trouvé -> message alerte erreur rouge
+							champ de form pour corriger nom voie
+							--
+							Au niveau du JS hover:
+							récupérer le N_SQ_VO et les numéros dans data html
+							highlight le(s) bon(s) tronçons
+							--
+							ensuite
+							récupérer les points en bouts de tronçons, les isoler dans un groupe,
+							faire une concave hull de ces points
+							proposer de récupérer le geojson
+							--
+							proposer de récup le CSV corrigé
+							*/
+							
 							foreach( $rows as $row ) {
 								echo '<tr>';
 								echo '<td><a class="voiehover" href="#">' . $row->Voie . '</a></td>';
