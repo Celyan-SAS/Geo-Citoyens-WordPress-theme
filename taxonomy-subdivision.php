@@ -364,7 +364,7 @@ get_header(); ?>
 								var troncons = new L.geoJson();
 								$.ajax({
 									dataType: "json",
-									url: "/data/troncons-94052.json",
+									url: "/data/perimetre-bureaux-94052.json",
 									success: function(data) {
 									    $(data.features).each(function(key, data) {
 									    	troncons.addData(data);
