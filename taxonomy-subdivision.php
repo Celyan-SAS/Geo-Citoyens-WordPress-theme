@@ -460,7 +460,14 @@ get_header(); ?>
 									console.log( 'hovering on voie...' );
 									$.each( allLayers, function( index, gjlayer ) {
 										gjlayer.eachLayer(function(layer) {
-											console.log( layer );
+											if( '940072781' == layer.feature.properties.N_SQ_VO ) {
+												layer.setStyle({
+												    'color': '#FF0000',
+												    'weight': 2,
+												    'opacity': 1
+												});
+												console.log('found!');
+											}
 										});
 									});
 								});
