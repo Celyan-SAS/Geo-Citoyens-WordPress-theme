@@ -455,8 +455,10 @@ get_header(); ?>
 								console.log('setup hover voie');
 								$('a.voiehover').on('hover',function(e){
 									console.log( 'hovering on voie...' );
-									$.each( allLayers, function( index, value ) {
-										console.log( value );
+									$.each( allLayers, function( index, gjlayer ) {
+										gjlayer.eachLayer(function(layer) {
+											console.log( layer );
+										});
 									});
 								});
 							});})(jQuery);
