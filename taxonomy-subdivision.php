@@ -7,6 +7,8 @@ if( count( $ancestors ) > 0 )
 	$niveau = 'département';
 if( count( $ancestors ) > 1 )
 	$niveau = 'canton';
+if( count( $ancestors ) > 2 )
+	$niveau = 'bureau';
 
 /** redirection canonique : cas particulier Paris et DOM-TOM **/
 if( $niveau == 'département' || $niveau == 'région' ) {
@@ -364,7 +366,7 @@ get_header(); ?>
 								var troncons = new L.geoJson();
 								$.ajax({
 									dataType: "json",
-									url: "/data/perimetre-bureaux-94052.json",
+									url: "/data/cantons_2015_simpl.json",
 									success: function(data) {
 									    $(data.features).each(function(key, data) {
 									    	troncons.addData(data);
@@ -380,6 +382,66 @@ get_header(); ?>
 					?>
 					</div>
 					
+				<?php endif; ?>
+				
+				<?php if( 'bureau' == $niveau ) : ?>
+				
+				
+				<div class="carte">
+					<?php 
+						/** Sélectionner uniquement les villes de ce canton **/
+						$villes = get_posts( array( 
+							'post_type'	=> 'city', 
+							'tax_query'	=> array(
+								array(
+									'taxonomy'  => 'subdivision',
+									'field'		=> 'name',
+									'terms'		=> get_queried_object()->name
+								)
+							)
+						) );
+						//var_dump( $villes );
+						
+						/** Afficher la carte **/
+						echo do_shortcode( '[wpgeojson_map map_type="leaflet" post_type="city" selection="' .$villes[0]->ID . '"]' );
+						if( $geojson = get_field( 'geojson', 'subdivision_' . get_queried_object()->term_id ) )
+							echo '<script>(function($){$(document).ready(function(){' .
+									'additionalFeatures.push(' . html_entity_decode( $geojson ) . ');' .
+									'});})(jQuery);</script>';
+						
+						/** Test troncons voies Nogent **/
+						//ogr2ogr -s_srs EPSG:2154 -t_srs EPSG:4326 -f GeoJSON troncons-94052.json TRONCON_VOIE.shp -where "C_COINSEE=94052"
+						if( 8606 == $villes[0]->ID ) :
+							echo '<h3>Test bureau 1 Nogent</h3><table>';
+							global $wpdb;
+							$q = "
+								SELECT * FROM geo_arretes_bureaux 
+								WHERE code_insee='94052' AND
+								Bureau = 1;
+							";
+							$rows = $wpdb->get_results( $q );	
+							foreach( $rows as $row ) {
+								echo '<tr>';
+								echo '<td><a class="voiehover">' . $row->Voie . '</a></td>';
+								echo '</tr>';
+							}
+							echo '</table>';
+							?>
+							<script>
+							(function($){$(document).ready(function(){
+								$('a.voiehover').on('hover',function(e){
+									console.log( 'hovering on voie...' );
+									$.each( allLayers, function( index, value ) {
+										console.log( value.properties.N_SQ_VO );
+									});
+								});
+							});})(jQuery);
+							</script>
+							<?php
+						endif;
+					?>
+					</div>
+				
 				<?php endif; ?>
 				
 			<?php endif; ?>
