@@ -401,7 +401,7 @@ get_header(); ?>
 								array(
 									'taxonomy'  => 'subdivision',
 									'field'		=> 'name',
-									'terms'		=> get_queried_object()->name
+									'term_id'		=> get_queried_object()->parent
 								)
 							)
 						) );
@@ -409,10 +409,28 @@ get_header(); ?>
 						
 						/** Afficher la carte **/
 						echo do_shortcode( '[wpgeojson_map map_type="leaflet" post_type="city" selection="' .$villes[0]->ID . '"]' );
-						if( $geojson = get_field( 'geojson', 'subdivision_' . get_queried_object()->term_id ) )
+						if( $geojson = get_field( 'geojson', 'subdivision_' . get_queried_object()->parent ) )
 							echo '<script>(function($){$(document).ready(function(){' .
 									'additionalFeatures.push(' . html_entity_decode( $geojson ) . ');' .
 									'});})(jQuery);</script>';
+						
+						?>
+							<script>(function($){$(document).ready(function(){
+								var troncons = new L.geoJson();
+								$.ajax({
+									dataType: "json",
+									url: "/data/cantons_2015_simpl.json",
+									success: function(data) {
+									    $(data.features).each(function(key, data) {
+									    	troncons.addData(data);
+									    });
+									    additionalFeatures.push(data);
+									}
+								});
+								//additionalFeatures.push(troncons);
+							});})(jQuery);
+							</script>
+						<?php 
 						
 						/** Test troncons voies Nogent **/
 						//ogr2ogr -s_srs EPSG:2154 -t_srs EPSG:4326 -f GeoJSON troncons-94052.json TRONCON_VOIE.shp -where "C_COINSEE=94052"
@@ -432,21 +450,6 @@ get_header(); ?>
 							}
 							echo '</table>';
 							?>
-							<script>(function($){$(document).ready(function(){
-								var troncons = new L.geoJson();
-								$.ajax({
-									dataType: "json",
-									url: "/data/cantons_2015_simpl.json",
-									success: function(data) {
-									    $(data.features).each(function(key, data) {
-									    	troncons.addData(data);
-									    });
-									    additionalFeatures.push(data);
-									}
-								});
-								//additionalFeatures.push(troncons);
-							});})(jQuery);
-							</script>
 							<script>
 							(function($){$(document).ready(function(){
 								console.log('setup hover voie');
