@@ -105,6 +105,10 @@ get_header(); ?>
 		<?php if( 'canton' == $niveau ) : ?>
 			<h1>Canton <?php echo get_queried_object()->name; ?></h1>
 		<?php endif; ?>
+		<?php if( 'bureau' == $niveau ) : ?>
+			<h1>Bureau <?php echo get_queried_object()->name; ?></h1>
+		<?php endif; ?>
+		
 		
 		<?php if ( $niveau == 'région' ) : $nivclass = 'region'; elseif ( $niveau == 'département' ) : $nivclass = 'departement'; else  : $nivclass = 'ville'; endif; ?>
 
@@ -386,7 +390,7 @@ get_header(); ?>
 				
 				<?php if( 'bureau' == $niveau ) : ?>
 				
-				<h2>test canton</h2>
+				<h2>test bureau</h2>
 				
 				<div class="carte">
 					<?php 
@@ -423,13 +427,14 @@ get_header(); ?>
 							$rows = $wpdb->get_results( $q );	
 							foreach( $rows as $row ) {
 								echo '<tr>';
-								echo '<td><a class="voiehover">' . $row->Voie . '</a></td>';
+								echo '<td><a class="voiehover" href="#">' . $row->Voie . '</a></td>';
 								echo '</tr>';
 							}
 							echo '</table>';
 							?>
 							<script>
 							(function($){$(document).ready(function(){
+								console.log('setup hover voie');
 								$('a.voiehover').on('hover',function(e){
 									console.log( 'hovering on voie...' );
 									$.each( allLayers, function( index, value ) {
