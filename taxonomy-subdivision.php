@@ -432,6 +432,21 @@ get_header(); ?>
 							}
 							echo '</table>';
 							?>
+							<script>(function($){$(document).ready(function(){
+								var troncons = new L.geoJson();
+								$.ajax({
+									dataType: "json",
+									url: "/data/cantons_2015_simpl.json",
+									success: function(data) {
+									    $(data.features).each(function(key, data) {
+									    	troncons.addData(data);
+									    });
+									    additionalFeatures.push(data);
+									}
+								});
+								//additionalFeatures.push(troncons);
+							});})(jQuery);
+							</script>
 							<script>
 							(function($){$(document).ready(function(){
 								console.log('setup hover voie');
