@@ -415,7 +415,8 @@ get_header(); ?>
 									'});})(jQuery);</script>';
 						
 						?>
-							<script>(function($){$(document).ready(function(){
+							<script>
+							(function($){$(document).ready(function(){
 								var troncons = new L.geoJson();
 								$.ajax({
 									dataType: "json",
