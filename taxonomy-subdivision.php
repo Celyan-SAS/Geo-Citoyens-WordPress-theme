@@ -400,8 +400,8 @@ get_header(); ?>
 							'tax_query'	=> array(
 								array(
 									'taxonomy'  => 'subdivision',
-									'field'		=> 'term_id',
-									'terms'		=> 373
+									'field'		=> 'name',
+									'terms'		=> get_queried_object()->name
 								)
 							)
 						) );
