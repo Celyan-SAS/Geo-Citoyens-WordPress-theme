@@ -438,7 +438,7 @@ get_header(); ?>
 								$('a.voiehover').on('hover',function(e){
 									console.log( 'hovering on voie...' );
 									$.each( allLayers, function( index, value ) {
-										console.log( value.properties.N_SQ_VO );
+										console.log( value );
 									});
 								});
 							});})(jQuery);
