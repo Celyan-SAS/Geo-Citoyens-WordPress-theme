@@ -208,7 +208,7 @@ get_header(); ?>
 				}
 				?>
 				
-				<?php if ( $niveau != 'département' && $niveau != 'canton' ) : ?>
+				<?php if ( $niveau != 'département' && $niveau != 'canton' && $niveau != 'bureau' ) : ?>
 					<div class="carte">
 						<svg id="france-svg" class="svg france regions" viewBox="0 0 <?php echo $maxX - $minX; ?> <?php echo $maxY - $minY; ?>" style="width:100%;height:500px;max-height:500px;" width="100%"><g>
 						<?php 
@@ -386,6 +386,7 @@ get_header(); ?>
 				
 				<?php if( 'bureau' == $niveau ) : ?>
 				
+				<h2>test canton</h2>
 				
 				<div class="carte">
 					<?php 
