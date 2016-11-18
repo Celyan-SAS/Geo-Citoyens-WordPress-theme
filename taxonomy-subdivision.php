@@ -417,6 +417,7 @@ get_header(); ?>
 						?>
 							<script>
 							(function($){$(document).ready(function(){
+								console.log('recup tronçons...');
 								var troncons = new L.geoJson();
 								$.ajax({
 									dataType: "json",
@@ -424,6 +425,7 @@ get_header(); ?>
 									success: function(data) {
 									    $(data.features).each(function(key, data) {
 									    	troncons.addData(data);
+									    	console.log('success');
 									    });
 									    additionalFeatures.push(data);
 									}
